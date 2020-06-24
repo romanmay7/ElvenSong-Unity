@@ -25,6 +25,7 @@ public class Mover : MonoBehaviour
             lastRay = Camera.main.ScreenPointToRay(Input.mousePosition); //Casts Ray From Main Camera to Mouse Position
             Debug.DrawRay(lastRay.origin, lastRay.direction * 100); //Draws a Line from start to dest
         }
+        UpdateAnimator();
         
 
         //GetComponent<NavMeshAgent>().destination = target.position; //move player to the position of target object
@@ -42,5 +43,13 @@ public class Mover : MonoBehaviour
         {
             GetComponent<NavMeshAgent>().destination = hit.point;
         }
+    }
+
+    private void UpdateAnimator()
+    {
+        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;//get velocity from NavMesh Agent
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);//transform direction from World Space to Local Space
+        float speed = localVelocity.z; //get z value
+        GetComponent<Animator>().SetFloat("forwardSpeed", speed); //passing speed to Animator's 'forwardSpeed' variable
     }
 }

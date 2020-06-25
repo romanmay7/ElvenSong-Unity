@@ -7,6 +7,7 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] Transform target;
     Ray lastRay;
+    bool isMoving;
 
     // Start is called before the first frame update
     void Start()
@@ -15,15 +16,30 @@ public class Mover : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+
         if (Input.GetMouseButtonDown(0))
+        {
+            //print("Left Mouse Button is Pressed");
+            isMoving = true;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            //print("Left Mouse Button is Released");
+            isMoving = false;
+        }
+
+
+
+        if (isMoving)
         {
              
             MoveToCursor();
 
-            lastRay = Camera.main.ScreenPointToRay(Input.mousePosition); //Casts Ray From Main Camera to Mouse Position
-            Debug.DrawRay(lastRay.origin, lastRay.direction * 100); //Draws a Line from start to dest
+            //lastRay = Camera.main.ScreenPointToRay(Input.mousePosition); //Casts Ray From Main Camera to Mouse Position
+            //Debug.DrawRay(lastRay.origin, lastRay.direction * 100); //Draws a Line from start to dest
         }
         UpdateAnimator();
         

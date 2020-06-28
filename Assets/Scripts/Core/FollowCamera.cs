@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCamera : MonoBehaviour
+
+namespace ElvenSong.Core
 {
-    [SerializeField] Transform target;
-
-    // Start is called before the first frame update
-    void Start()
+    public class FollowCamera : MonoBehaviour
     {
-        
-    }
+        [SerializeField] Transform target;
 
-    // Update is called once per frame
-    void Update()
-    {
+        // Start is called before the first frame update
+        void Start()
+        {
 
-        transform.position = target.position;
-        
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+            transform.position = target.position;
+
+        }
     }
 }

@@ -3,69 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Mover : MonoBehaviour
+namespace ElvenSong.Movement
 {
-    [SerializeField] Transform target;
-    Ray lastRay;
-    bool isMoving;
-
-    // Start is called before the first frame update
-    void Start()
+    public class Mover : MonoBehaviour
     {
-        
-    }
+        [SerializeField] Transform target;
+        //Ray lastRay;
 
-    // Update is called once per frame
-    void LateUpdate()
-    {
 
-        if (Input.GetMouseButtonDown(0))
+        public float movespeed = 5.66f;
+        public float rotatespeed = 75f;
+        private float vInput;
+        private float hInput;
+
+        // Start is called before the first frame update
+        void Start()
         {
-            //print("Left Mouse Button is Pressed");
-            isMoving = true;
+
         }
 
-        if (Input.GetMouseButtonUp(0))
+        // Update is called once per frame
+        void LateUpdate()
         {
-            //print("Left Mouse Button is Released");
-            isMoving = false;
-        }
-
-
-
-        if (isMoving)
-        {
-             
-            MoveToCursor();
 
             //lastRay = Camera.main.ScreenPointToRay(Input.mousePosition); //Casts Ray From Main Camera to Mouse Position
             //Debug.DrawRay(lastRay.origin, lastRay.direction * 100); //Draws a Line from start to dest
+
+            UpdateAnimator();
+
         }
-        UpdateAnimator();
-        
 
-        //GetComponent<NavMeshAgent>().destination = target.position; //move player to the position of target object
-    
-
-
-    }
-
-   private void MoveToCursor()
-    {
-        Ray ray= Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;//Storing info(position) about where the ray cast will  hit inside this variable
-        bool hasHit=Physics.Raycast(ray, out hit);
-        if (hasHit)
+        public void MoveByKeyboard()
         {
-            GetComponent<NavMeshAgent>().destination = hit.point;
+            vInput = Input.GetAxis("Vertical") * movespeed;
+            hInput = Input.GetAxis("Horizontal") * rotatespeed;
+            this.transform.Translate(Vector3.forward * vInput * Time.deltaTime);
+            this.transform.Rotate(Vector3.up * hInput * Time.deltaTime);
+            GetComponent<Animator>().SetFloat("forwardSpeed", vInput);
+        }
+
+        public void MoveTo(Vector3 destination)
+        {
+            GetComponent<NavMeshAgent>().destination = destination;
+        }
+
+        private void UpdateAnimator()
+        {
+            Vector3 velocity = GetComponent<NavMeshAgent>().velocity;//get velocity from NavMesh Agent
+            Vector3 localVelocity = transform.InverseTransformDirection(velocity);//transform direction from World Space to Local Space
+            float speed = localVelocity.z; //get z value
+            GetComponent<Animator>().SetFloat("forwardSpeed", speed); //passing speed to Animator's 'forwardSpeed' variable
         }
     }
 
-    private void UpdateAnimator()
-    {
-        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;//get velocity from NavMesh Agent
-        Vector3 localVelocity = transform.InverseTransformDirection(velocity);//transform direction from World Space to Local Space
-        float speed = localVelocity.z; //get z value
-        GetComponent<Animator>().SetFloat("forwardSpeed", speed); //passing speed to Animator's 'forwardSpeed' variable
-    }
 }

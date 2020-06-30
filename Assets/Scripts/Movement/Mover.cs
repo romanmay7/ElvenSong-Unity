@@ -8,6 +8,7 @@ namespace ElvenSong.Movement
     public class Mover : MonoBehaviour
     {
         [SerializeField] Transform target;
+        NavMeshAgent navMeshAgent;
         //Ray lastRay;
 
 
@@ -19,7 +20,8 @@ namespace ElvenSong.Movement
         // Start is called before the first frame update
         void Start()
         {
-
+            navMeshAgent = GetComponent<NavMeshAgent>();
+            navMeshAgent.isStopped = false;
         }
 
         // Update is called once per frame
@@ -31,6 +33,10 @@ namespace ElvenSong.Movement
 
             UpdateAnimator();
 
+        }
+        public void Stop() 
+        {
+            navMeshAgent.isStopped = true;
         }
 
         public void MoveByKeyboard()
@@ -44,12 +50,13 @@ namespace ElvenSong.Movement
 
         public void MoveTo(Vector3 destination)
         {
-            GetComponent<NavMeshAgent>().destination = destination;
+            navMeshAgent.isStopped = false;
+            navMeshAgent.destination = destination;
         }
 
         private void UpdateAnimator()
         {
-            Vector3 velocity = GetComponent<NavMeshAgent>().velocity;//get velocity from NavMesh Agent
+            Vector3 velocity = navMeshAgent.velocity;//get velocity from NavMesh Agent
             Vector3 localVelocity = transform.InverseTransformDirection(velocity);//transform direction from World Space to Local Space
             float speed = localVelocity.z; //get z value
             GetComponent<Animator>().SetFloat("forwardSpeed", speed); //passing speed to Animator's 'forwardSpeed' variable

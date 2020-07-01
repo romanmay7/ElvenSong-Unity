@@ -55,7 +55,7 @@ namespace ElvenSong.Control
 
         private void MoveToCursor(Vector3 point)
         {
-            GetComponent<Mover>().MoveTo(point);
+            GetComponent<Mover>().StartMoveAction(point);
         }
 
         private static Ray GetMouseRay()

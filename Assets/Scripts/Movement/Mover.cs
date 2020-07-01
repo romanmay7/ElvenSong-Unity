@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using ElvenSong.Combat;
 
 namespace ElvenSong.Movement
 {
@@ -46,6 +47,12 @@ namespace ElvenSong.Movement
             this.transform.Translate(Vector3.forward * vInput * Time.deltaTime);
             this.transform.Rotate(Vector3.up * hInput * Time.deltaTime);
             GetComponent<Animator>().SetFloat("forwardSpeed", vInput);
+        }
+
+        public void StartMoveAction(Vector3 destination)
+        {
+            GetComponent<Fighter>().Cancel(); //Canceling the Combat before Moving
+            MoveTo(destination);
         }
 
         public void MoveTo(Vector3 destination)

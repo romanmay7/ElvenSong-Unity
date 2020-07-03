@@ -12,8 +12,8 @@ namespace ElvenSong.Control
         private void Update()
         {
             if (InteractWithCombat()) return; //If there are Combat Requests, skip the Movement
-            if (InteractWithMovement()) { print("Move!"); return; } //If Movement is possible perform it and return
-            print("Nothere to Go");
+            if (InteractWithMovement()) {/* print("Move!"); return;/*/ } //If Movement is possible perform it and return
+           // print("Nothere to Go");
 
             // GetComponent<Mover>().MoveByKeyboard();
 

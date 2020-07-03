@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using ElvenSong.Combat;
+using ElvenSong.Core;
+
 
 namespace ElvenSong.Movement
 {
-    public class Mover : MonoBehaviour
+    public class Mover : MonoBehaviour, IAction
     {
         [SerializeField] Transform target;
         NavMeshAgent navMeshAgent;
@@ -35,8 +36,9 @@ namespace ElvenSong.Movement
             UpdateAnimator();
 
         }
-        public void Stop() 
+        public void Cancel() 
         {
+            print("Cancelling Movement Action");
             navMeshAgent.isStopped = true;
         }
 
@@ -51,7 +53,7 @@ namespace ElvenSong.Movement
 
         public void StartMoveAction(Vector3 destination)
         {
-            GetComponent<Fighter>().Cancel(); //Canceling the Combat before Moving
+            GetComponent<ActionScheduler>().StartAction(this);
             MoveTo(destination);
         }
 
@@ -68,6 +70,9 @@ namespace ElvenSong.Movement
             float speed = localVelocity.z; //get z value
             GetComponent<Animator>().SetFloat("forwardSpeed", speed); //passing speed to Animator's 'forwardSpeed' variable
         }
+
+
+
     }
 
 }

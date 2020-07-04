@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace ElvenSong.Combat
 {
-    public class Fighter:MonoBehaviour, IAction
+    public class Fighter:MonoBehaviour,IAction
     {
         [SerializeField] float weaponRange = 2f;
         Transform target;
@@ -23,9 +23,14 @@ namespace ElvenSong.Combat
             else
             {
                 GetComponent<Mover>().Cancel();//stop NavMesh Agent on Mover
+                AttackBehaviour();//After Fighter Stopped-Start Attack Animation
 
             }
 
+        }
+        private void AttackBehaviour()
+        {
+            GetComponent<Animator>().SetTrigger("attack");
         }
 
         public void Attack(CombatTarget combatTarget)
@@ -33,6 +38,7 @@ namespace ElvenSong.Combat
             GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.transform;
             print("ARRRRGHHHHH");
+            
         }
 
         public void Cancel()
@@ -41,6 +47,10 @@ namespace ElvenSong.Combat
             print("Cancelling Attack Action");
         }
 
-        
+        //Animation Event
+        void Hit()
+        {
+
+        }
     }
 }

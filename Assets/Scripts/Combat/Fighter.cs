@@ -9,10 +9,14 @@ namespace ElvenSong.Combat
     public class Fighter:MonoBehaviour,IAction
     {
         [SerializeField] float weaponRange = 2f;
+        [SerializeField] float timeBetweenAttacks = 1f;
+
         Transform target;
+        float timeSinceLastAttack = 0;
 
         private void Update()
         {
+            timeSinceLastAttack += Time.deltaTime; //Adding time passed since last call to Update(Time the last frame took to Render)
             if (target == null) return;
 
             if (Vector3.Distance(target.position, transform.position) > weaponRange)
@@ -23,14 +27,18 @@ namespace ElvenSong.Combat
             else
             {
                 GetComponent<Mover>().Cancel();//stop NavMesh Agent on Mover
-                AttackBehaviour();//After Fighter Stopped-Start Attack Animation
+                triggerAttackBehaviour();//After Fighter Stopped-Start Attack Animation
 
             }
 
         }
-        private void AttackBehaviour()
+        private void triggerAttackBehaviour()
         {
-            GetComponent<Animator>().SetTrigger("attack");
+            if (timeSinceLastAttack >= timeBetweenAttacks)
+            {
+                GetComponent<Animator>().SetTrigger("attack");
+                timeSinceLastAttack = 0; //Reseting the counter
+            }
         }
 
         public void Attack(CombatTarget combatTarget)

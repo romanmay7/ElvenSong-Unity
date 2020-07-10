@@ -10,7 +10,7 @@ namespace ElvenSong.Combat
     {
         [SerializeField] float weaponRange = 2f;
         [SerializeField] float timeBetweenAttacks = 1f;
-
+        [SerializeField] float attackDamage = 10f;
         Transform target;
         float timeSinceLastAttack = 0;
 
@@ -27,6 +27,7 @@ namespace ElvenSong.Combat
             else
             {
                 GetComponent<Mover>().Cancel();//stop NavMesh Agent on Mover
+                 
                 triggerAttackBehaviour();//After Fighter Stopped-Start Attack Animation
 
             }
@@ -34,9 +35,11 @@ namespace ElvenSong.Combat
         }
         private void triggerAttackBehaviour()
         {
-            if (timeSinceLastAttack >= timeBetweenAttacks)
+            if (timeSinceLastAttack >= timeBetweenAttacks)//If enough time have passed between attacks
             {
                 GetComponent<Animator>().SetTrigger("attack");
+                Health targetHealth=target.GetComponent<Health>();
+                targetHealth.TakeDamage(attackDamage);
                 timeSinceLastAttack = 0; //Reseting the counter
             }
         }

@@ -31,6 +31,7 @@ namespace ElvenSong.Core
             {
                 is_down = true;
             }
+
             if (Input.GetMouseButton(1) && is_down)
             {
                 // Do Something
@@ -42,12 +43,16 @@ namespace ElvenSong.Core
                 currentRotation.y = Mathf.Clamp(currentRotation.y, -maxYAngle, maxYAngle);
                 transform.rotation = Quaternion.Euler(currentRotation.y, currentRotation.x, 0);
             }
+            else
+            {
+                transform.position = target.position;
+            }
 
             if (Input.GetMouseButtonUp(1))
             {
                 Debug.Log("Mouse is UP");
                 is_down = false;
-                transform.position = target.position;
+
             }
 
 

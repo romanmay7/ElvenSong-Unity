@@ -37,7 +37,7 @@ namespace ElvenSong.Combat
         {
             if (timeSinceLastAttack >= timeBetweenAttacks)//If enough time have passed between attacks
             {
-                GetComponent<Animator>().SetTrigger("attack");
+                GetComponent<Animator>().SetTrigger("attack");//Animate attack
                 Health targetHealth=target.GetComponent<Health>();
                 targetHealth.TakeDamage(attackDamage);
                 timeSinceLastAttack = 0; //Reseting the counter

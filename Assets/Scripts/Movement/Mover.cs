@@ -60,8 +60,11 @@ namespace ElvenSong.Movement
 
         public void MoveTo(Vector3 destination)
         {
-            navMeshAgent.isStopped = false;
-            navMeshAgent.destination = destination;
+            if (navMeshAgent.isOnNavMesh)
+            {
+                navMeshAgent.isStopped = false;
+                navMeshAgent.destination = destination;
+            }
            
         }
 
